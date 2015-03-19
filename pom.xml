@@ -21,7 +21,7 @@
     <mailingLists>
         <mailingList>
             <name>Souhail SI AHMED OUALI</name>
-            <subscribe>@SouhJu</subscribe>
+            <subscribe>SouhJu@twitter</subscribe>
             <post>Java Craftsman Developer</post>
         </mailingList>
     </mailingLists>
@@ -38,6 +38,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <github.global.server>github</github.global.server>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -76,148 +77,61 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.10.1</version>
-                    <configuration>
-                        <links>
-                            <link>http://docs.oracle.com/javase/7/docs/api/</link>
-                        </links>
-                        <detectLinks>true</detectLinks>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.5</version>
-                    <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <releaseProfiles>release</releaseProfiles>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.16</version>
-                    <configuration>
-                        <argLine>-Xmx128m</argLine>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        <systemPropertyVariables>
-                            <java.io.tmpdir>${project.build.directory}/surefire-tmp</java.io.tmpdir>
-                        </systemPropertyVariables>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-site-plugin</artifactId>
-                    <version>3.4</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>animal-sniffer-maven-plugin</artifactId>
-                    <version>1.14</version>
-                    <configuration>
-                        <signature>
-                            <groupId>org.codehaus.mojo.signature</groupId>
-                            <artifactId>java17</artifactId>
-                            <version>1.0</version>
-                        </signature>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>check-java-1.7-compat</id>
-                            <phase>process-classes</phase>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>clirr-maven-plugin</artifactId>
-                    <version>2.6.1</version>
-                    <executions>
-                        <execution>
-                            <id>check-api-compat</id>
-                            <phase>verify</phase>
-                            <goals>
-                                <goal>check-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.plexus</groupId>
-                    <artifactId>plexus-component-metadata</artifactId>
-                    <version>1.5.5</version>
-                    <executions>
-                        <execution>
-                            <id>generate-components-xml</id>
-                            <goals>
-                                <goal>generate-metadata</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
-                    <artifactId>maven-scm-plugin</artifactId>
-                    <version>1.9.2</version>
-                    <configuration>
-                        <tag>${project.artifactId}-${project.version}</tag>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo
+                    </altDeploymentRepository>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.11</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>
+                    <noJekyll>true</noJekyll>
+                    <outputDirectory>${project.build.directory}/mvn-repo
+                    </outputDirectory>
+                    <branch>refs/heads/mvn-repo</branch>
+                    <includes>
+                        <include>**/*</include>
+                    </includes>
+                    <repositoryName>pengyifan-commons</repositoryName>
+                    <repositoryOwner>s-ahmedouali</repositoryOwner>
+                    <server>github</server>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <repositories>
-                <repository>
-                    <id>releases</id>
-                    <url>https://github.com/SaOaS/mvn-repo/raw/master/releases</url>
-                </repository>
-            </repositories>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-release-plugin</artifactId>
-                        <version>2.5</version>
-                        <configuration>
-                            <useReleaseProfile>false</useReleaseProfile>
-                            <preparationGoals>clean install</preparationGoals>
-                            <goals>deploy</goals>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <distributionManagement>
         <repository>
-            <id>releases</id>
-            <url>https://github.com/SaOaS/mvn-repo/raw/master/releases</url>
+            <id>internal.repo</id>
+            <name>Temporary Staging Repository</name>
+            <url>file://${project.build.directory}/mvn-repo</url>
         </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>https://github.com/SaOaS/mvn-repo/raw/master/snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
-    <repositories>
-        <repository>
-            <id>git-s-ahmedouali</id>
-            <name>s-ahmedouali's Git based repo</name>
-            <url>https://github.com/SaOaS/mvn-repo/raw/master/releases/</url>
-        </repository>
-    </repositories>
 
 
 </project>
