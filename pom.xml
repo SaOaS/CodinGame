@@ -1,84 +1,252 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.saoas.codingame</groupId>
     <artifactId>codingame</artifactId>
     <version>0.2-SNAPSHOT</version>
 
+    <name>Coding game</name>
+    <description>
+        Les jeux sont basés sur un fonctionnement au tour par tour. A chaque
+        tour de jeu, vous obtenez des informations depuis l’entrée standard (ce
+        peut être une carte du jeu, la position des ennemis…), votre code
+        effectue un calcul et écrit l'action à effectuer sur la sortie standard.
+    </description>
+    <url>https://github.com/SaOaS/codingame/</url>
+    <inceptionYear>2015</inceptionYear>
+
+    <mailingLists>
+        <mailingList>
+            <name>Souhail SI AHMED OUALI</name>
+            <subscribe>@SouhJu</subscribe>
+            <post>Java Craftsman Developer</post>
+        </mailingList>
+    </mailingLists>
     <scm>
         <connection>scm:git:git@github.com:SaOaS/codingame.git</connection>
-      <tag>HEAD</tag>
-  </scm>
+        <developerConnection>scm:git:git@github.com:SaOaS/codingame.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/SaOaS/codingame/issues</url>
+    </issueManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.14</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>2.4</version>
+            </dependency>
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>1.2.14</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-release-plugin</artifactId>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>2.5</version>
-                <configuration>
-                    <releaseProfiles>pusher</releaseProfiles>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>external.atlassian.jgitflow</groupId>
-                <artifactId>jgitflow-maven-plugin</artifactId>
-                <version>1.0-m3</version>
-                <configuration>
-                    <noDeploy>true</noDeploy>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-scm-plugin</artifactId>
-                <version>1.9.2</version>
-                <configuration>
-                    <tag>${project.artifactId}-${project.version}</tag>
-                </configuration>
-            </plugin>
-            <plugin>  
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>versions-maven-plugin</artifactId>
-                <version>2.1</version>
-            </plugin>
-        </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.1</version>
+                    <configuration>
+                        <links>
+                            <link>http://docs.oracle.com/javase/7/docs/api/</link>
+                        </links>
+                        <detectLinks>true</detectLinks>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.5</version>
+                    <configuration>
+                        <autoVersionSubmodules>true</autoVersionSubmodules>
+                        <releaseProfiles>pusher</releaseProfiles>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.16</version>
+                    <configuration>
+                        <argLine>-Xmx128m</argLine>
+                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        <systemPropertyVariables>
+                            <java.io.tmpdir>${project.build.directory}/surefire-tmp</java.io.tmpdir>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-site-plugin</artifactId>
+                    <version>3.4</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>animal-sniffer-maven-plugin</artifactId>
+                    <version>1.14</version>
+                    <configuration>
+                        <signature>
+                            <groupId>org.codehaus.mojo.signature</groupId>
+                            <artifactId>java17</artifactId>
+                            <version>1.0</version>
+                        </signature>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>check-java-1.7-compat</id>
+                            <phase>process-classes</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>clirr-maven-plugin</artifactId>
+                    <version>2.6.1</version>
+                    <executions>
+                        <execution>
+                            <id>check-api-compat</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.plexus</groupId>
+                    <artifactId>plexus-component-metadata</artifactId>
+                    <version>1.5.5</version>
+                    <executions>
+                        <execution>
+                            <id>generate-components-xml</id>
+                            <goals>
+                                <goal>generate-metadata</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-scm-plugin</artifactId>
+                    <version>1.9.2</version>
+                    <configuration>
+                        <tag>${project.artifactId}-${project.version}</tag>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-source-release-distro</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                                <configuration>
+                                    <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                                    <descriptorRefs>
+                                        <descriptorRef>source-release</descriptorRef>
+                                    </descriptorRefs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>snapshot-sources</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>reporting</id>
+            <reporting>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.10.1</version>
+                        <reportSets>
+                            <reportSet>
+                                <id>non-aggregate</id>
+                                <reports>
+                                    <report>javadoc</report>
+                                    <report>test-javadoc</report>
+                                </reports>
+                            </reportSet>
+                            <reportSet>
+                                <id>aggregate</id>
+                                <inherited>false</inherited>
+                                <reports>
+                                    <report>aggregate</report>
+                                </reports>
+                            </reportSet>
+                        </reportSets>
+                    </plugin>
+
+                </plugins>
+            </reporting>
+        </profile>
+    </profiles>
+
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <url>https://github.com/SaOaS/mvn-repo/tree/master/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://github.com/SaOaS/mvn-repo/tree/master/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
 
 </project>
