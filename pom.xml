@@ -7,6 +7,7 @@
     <artifactId>codingame</artifactId>
     <version>0.2-SNAPSHOT</version>
 
+
     <name>Coding game</name>
     <description>
         Les jeux sont basés sur un fonctionnement au tour par tour. A chaque
@@ -54,10 +55,25 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.11</version>
-                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
@@ -246,7 +262,6 @@
             <url>https://github.com/SaOaS/mvn-repo/tree/master/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-
 
 
 </project>
