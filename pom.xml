@@ -4,7 +4,7 @@
 
     <groupId>com.saoas.codingame</groupId>
     <artifactId>codingame</artifactId>
-    <version>0.4-SNAPSHOT</version>
+    <version>0.8-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Coding game</name>
@@ -27,6 +27,7 @@
     <scm>
         <connection>scm:git:git@github.com:SaOaS/codingame.git</connection>
         <developerConnection>scm:git:git@github.com:SaOaS/codingame.git</developerConnection>
+        <url>https://github.com/SaOaS/codingame.git</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -106,11 +107,11 @@
                 <version>2.8.1</version>
                 <configuration>
                     <!--<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>-->
-                    <altSnapshotDeploymentRepository>
-                        snapshot-repository::default::file:N:\git-me\maven-sandbox-repo/snapshots/
-                    </altSnapshotDeploymentRepository>
-                    <altReleaseDeploymentRepository>release-repo::default::file:N:\git-me\maven-sandbox-repo/releases/
-                    </altReleaseDeploymentRepository>
+                    <!--<altSnapshotDeploymentRepository>-->
+                        <!--snapshot-repository::default::file:N:\git-me\maven-sandbox-repo/snapshots/-->
+                    <!--</altSnapshotDeploymentRepository>-->
+                    <!--<altReleaseDeploymentRepository>release-repository::default::file:N:\git-me\maven-sandbox-repo/releases/-->
+                    <!--</altReleaseDeploymentRepository>-->
                     <uniqueVersion>false</uniqueVersion>
                     <!-- Disable timestamps suffix in an artifact !-->
                 </configuration>
@@ -134,37 +135,39 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <goals>
+                            <goal>perform</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>-Dgoals=deploy -Dgit.tag.previous=</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <preparationGoals>clean install</preparationGoals>
+                    <arguments>-Dgit.tag.previous=</arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
 
     <distributionManagement>
         <repository>
-            <id>release-repo</id>
-            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/releases</url>
+            <id>github</id>
+            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/releases/</url>
         </repository>
         <snapshotRepository>
-            <id>snapshot-repository</id>
+            <id>github</id>
             <name>Maven2 Snapshot Repository</name>
             <uniqueVersion>false</uniqueVersion>
-            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/snapshots</url>
+            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-    <repositories>
-        <repository>
-            <id>release-repo</id>
-            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/releases</url>
-        </repository>
-        <repository>
-            <id>snapshot-repository</id>
-            <name>Maven2 Snapshot Repository</name>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <url>https://github.com/s-ahmedouali/maven-sandbox-repo/raw/master/snapshots</url>
-        </repository>
-
-    </repositories>
-
-
 </project>
